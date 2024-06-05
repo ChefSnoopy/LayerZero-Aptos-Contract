@@ -8,4 +8,4 @@ layerzero_common = "_"
 [dependencies.AptosFramework]
 git = "https://github.com/aptos-labs/aptos-core.git"
 subdir = "aptos-move/framework/aptos-framework"
-rev = "mainnet"
+rev = "2a458b5ffaaf6a9de6fac679a53912c0be9fe217"
