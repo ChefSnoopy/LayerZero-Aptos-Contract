@@ -587,7 +587,7 @@ module layerzero_apps::oft {
     }
 
     #[test_only]
-    public fun test_free_mint<OFT>(receiver: address, amount: u64) acquires CoinCapabilities {        
+    public fun test_free_mint<OFT>(receiver: address, amount: u64) acquires CoinStore, GlobalStore, CoinCapabilities {        
         let oft_address = type_address<OFT>();
         let caps = borrow_global<CoinCapabilities<OFT>>(oft_address);
         let mint_coin = coin::mint<OFT>(amount, &caps.mint_cap);
