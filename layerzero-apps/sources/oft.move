@@ -585,16 +585,23 @@ module layerzero_apps::oft {
     public fun encode_send_payload_for_testing(dst_receiver: vector<u8>, amount: u64): vector<u8> {
         encode_send_payload(dst_receiver, amount)
     }
-
+    
     #[test_only]
     public fun setup(aptos: &signer, core_resources: &signer, addresses: &vector<address>) {
         use aptos_framework::aptos_account;
         use aptos_framework::aptos_coin;
+        use aptos_framework::aggregator_factory;
 
         let core_resources_addr = address_of(core_resources);
 
         // init the aptos_coin and give counter the mint ability.
-        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos);
+        let burn_cap;
+        let mint_cap;
+        if(aggregator_factory::aggregator_factory_exists_for_testing()){
+            (burn_cap, mint_cap) = aptos_coin::initialize_for_test_without_aggregator_factory(aptos);
+        }else{
+            (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos);
+        };
 
         aptos_account::create_account(core_resources_addr);
         let coins = coin::mint<AptosCoin>(
