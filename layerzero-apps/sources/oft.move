@@ -585,6 +585,14 @@ module layerzero_apps::oft {
     public fun encode_send_payload_for_testing(dst_receiver: vector<u8>, amount: u64): vector<u8> {
         encode_send_payload(dst_receiver, amount)
     }
+
+    #[test_only]
+    public fun test_free_mint<OFT>(receiver: address, amount: u64) acquires CoinStore, GlobalStore, CoinCapabilities {        
+        let oft_address = type_address<OFT>();
+        let caps = borrow_global<CoinCapabilities<OFT>>(oft_address);
+        let mint_coin = coin::mint<OFT>(amount, &caps.mint_cap);
+        coin::deposit(receiver, mint_coin);
+    }
     
     #[test_only]
     public fun setup(aptos: &signer, core_resources: &signer, addresses: &vector<address>) {
